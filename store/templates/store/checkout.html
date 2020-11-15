@@ -8,6 +8,7 @@
         <div class="col-md-6">
             <div class="box-element" id="form-wrapper">
                 <form id="form">
+					{% csrf_token %}
                     <div id="user-info">
                         <div class="form-field">
 							<input required class="form-control" type="text" name="name" placeholder="Name..">
@@ -33,7 +34,7 @@
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Zip code..">
+							<input class="form-control" type="text" name="country" placeholder="Country..">
 						</div>
 					</div>
                     <hr>
@@ -109,6 +110,7 @@
 			'city':null,
 			'state':null,
 			'zipcode':null,
+			'country':null,
 		}
 		if (user == 'AnonymousUser'){
 			userformdata.name = form.name.value
@@ -120,6 +122,7 @@
 			shippinginfo.city = form.city.value
 			shippinginfo.state = form.state.value
 			shippinginfo.zipcode = form.zipcode.value
+			shippinginfo.country = form.country.value
 		}
 
 		var url = '/process_order/'

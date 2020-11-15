@@ -18,7 +18,7 @@ def store(request):
         cartitem = order['get_cart_items']
 
     products = Product.objects.all()
-    context = {'products': products, 'cartitem': cartitem}
+    context = {'items':items,'products': products, 'cartitem': cartitem}
     return render(request, 'store/store.html', context)
 
 
@@ -125,9 +125,13 @@ def updateitem(request):
     return JsonResponse('Item was added', safe=False)
 
 
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
 def processorder(request):
     transaction_id = datetime.datetime.now().timestamp()
-    data = json.load(request.body)
+    data = json.loads(request.body)
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -138,14 +142,15 @@ def processorder(request):
             order.complete = True
         order.save()
 
-        if order.shipping == True:
+        if order.shipping:
             ShippingAddress.objects.create(
-                customer = customer,
-                order = order,
-                adress = data['shipping']['address'],
+                customer=customer,
+                order=order,
+                address=data['shipping']['address'],
                 city=data['shipping']['city'],
                 state=data['shipping']['state'],
                 zipcode=data['shipping']['zipcode'],
+                country=data['shipping']['country'],
             )
     else:
         print('user is not logged in')
