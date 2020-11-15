@@ -1,0 +1,15 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+ <h1>Tracking</h1>
+<div class="container">
+    <div class="box-element">
+        <div class="form-group">
+            <input type="text" class="form-control" id="inputtrack" placeholder="enter order number here">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        <h2>Your order still in china</h2>
+    </div>
+</div>
+{% endblock content %}
