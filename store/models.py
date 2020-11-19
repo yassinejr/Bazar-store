@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 
 # Create your models here.
@@ -14,10 +17,15 @@ class Customer(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=200, null=True)
-    price = models.FloatField()
-    digital = models.BooleanField(default=False, null=True, blank=True)
-    image = models.ImageField(upload_to='images/', null=True, blank=True, )
+    name = models.CharField(max_length=200, null=True, verbose_name=_('Product name'))
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
+    brand = models.ForeignKey('settings.Brand', on_delete=models.CASCADE, null=True, blank=True)
+    description = models.TextField(max_length=500, null=True, default='', verbose_name=_('Description'))
+    price = models.FloatField(verbose_name=_('Price'))
+    coast = models.FloatField(default=0, verbose_name=_('Coast'))
+    digital = models.BooleanField(default=False, null=True, blank=True, verbose_name=_('Digital'))
+    image = models.ImageField(upload_to='images/product/', null=True, blank=True, verbose_name=_('Image'))
+    created_at = models.DateTimeField(default=datetime.now, null=True, blank=True, verbose_name=_('Created at'))
 
     def __str__(self):
         return self.name
@@ -29,6 +37,24 @@ class Product(models.Model):
         except:
             url = ''
         return url
+
+
+class Category(models.Model):
+    category_name = models.CharField(max_length=50, verbose_name=_('Category name'))
+    category_parent = models.ForeignKey('self', limit_choices_to={'category_parent__isnull': True},
+                                        on_delete=models.CASCADE,
+                                        null=True,
+                                        blank=True)
+    main_cat_desc = models.TextField(max_length=500, verbose_name=_('Description'))
+    main_cat_img = models.ImageField(upload_to='images/category/', null=True, blank=True,
+                                     verbose_name=_('Category image'))
+
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+
+    def __str__(self):
+        return str(self.category_name)
 
 
 class Order(models.Model):
@@ -45,7 +71,7 @@ class Order(models.Model):
         shipping = False
         orderitem = self.orderitem_set.all()
         for i in orderitem:
-            if i.product.digital == False:
+            if not i.product.digital:
                 shipping = True
         return shipping
 

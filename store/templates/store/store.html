@@ -43,7 +43,7 @@
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{p.name}}</h5>
-                        <p class="card-text">Some content.</p>
+                        <p class="card-text">{{p.description}}</p>
                         <button data-product={{p.id}} data-action="add" class="btn btn-primary update-cart">Add</button>
                         <a href="{% url 'product' %}" class="btn btn-outline-success">View</a>
                         <h6 style="display: inline; float: right">{{p.price|floatformat:2}} €</h6>
