@@ -3,51 +3,40 @@ from django.http import JsonResponse
 import json
 import datetime
 from .models import *
+from .utils import cookieCart, cartData, guestOrder
 
 
-# Create your views here.
 def store(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cartitem = order.get_cart_items
-    else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-        cartitem = order['get_cart_items']
+    data = cartData(request)
+
+    cartitems = data['cartitems']
+    order = data['order']
+    items = data['items']
 
     products = Product.objects.all()
-    context = {'items':items,'products': products, 'cartitem': cartitem}
+    context = {'products': products, 'cartitems': cartitems}
     return render(request, 'store/store.html', context)
 
 
 def cart(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cartitem = order.get_cart_items
-    else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-        cartitem = order['get_cart_items']
-    context = {'items': items, 'order': order, 'cartitem': cartitem}
+    data = cartData(request)
+
+    cartitems = data['cartitems']
+    order = data['order']
+    items = data['items']
+
+    context = {'items': items, 'order': order, 'cartitems': cartitems}
     return render(request, 'store/cart.html', context)
 
 
 def checkout(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cartitem = order.get_cart_items
-    else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-        cartitem = order['get_cart_items']
+    data = cartData(request)
 
-    context = {'items': items, 'order': order, 'cartitem': cartitem}
+    cartitems = data['cartitems']
+    order = data['order']
+    items = data['items']
+
+    context = {'items': items, 'order': order, 'cartitems': cartitems}
     return render(request, 'store/checkout.html', context)
 
 
@@ -92,12 +81,12 @@ def track(request):
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
-        cartitem = order.get_cart_items
+        cartitems = order.get_cart_items
     else:
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0}
-        cartitem = order['get_cart_items']
-    context = {'cartitem': cartitem}
+        cartitems = order['get_cart_items']
+    context = {'cartitem': cartitems}
     return render(request, 'store/track.html', context)
 
 
@@ -105,23 +94,25 @@ def updateitem(request):
     data = json.loads(request.body)
     productid = data['productid']
     action = data['action']
-
-    print('productid:', productid)
-    print('action:', action)
+    print('Action:', action)
+    print('Product:', productid)
 
     customer = request.user.customer
     product = Product.objects.get(id=productid)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
     orderitem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
     if action == 'add':
-        orderitem.quantity = orderitem.quantity + 1
+        orderitem.quantity = (orderitem.quantity + 1)
     elif action == 'remove':
-        orderitem.quantity = orderitem.quantity - 1
+        orderitem.quantity = (orderitem.quantity - 1)
+
     orderitem.save()
 
     if orderitem.quantity <= 0:
         orderitem.delete()
+
     return JsonResponse('Item was added', safe=False)
 
 
@@ -135,23 +126,25 @@ def processorder(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        total = float(data['form']['total'])
-        order.transaction_id = transaction_id
-
-        if total == order.get_cart_total:
-            order.complete = True
-        order.save()
-
-        if order.shipping:
-            ShippingAddress.objects.create(
-                customer=customer,
-                order=order,
-                address=data['shipping']['address'],
-                city=data['shipping']['city'],
-                state=data['shipping']['state'],
-                zipcode=data['shipping']['zipcode'],
-                country=data['shipping']['country'],
-            )
     else:
-        print('user is not logged in')
+        customer, order = guestOrder(request, data)
+
+    total = float(data['form']['total'])
+    order.transaction_id = transaction_id
+
+    if total == order.get_cart_total:
+        order.complete = True
+    order.save()
+
+    if order.shipping:
+        ShippingAddress.objects.create(
+            customer=customer,
+            order=order,
+            address=data['shipping']['address'],
+            city=data['shipping']['city'],
+            state=data['shipping']['state'],
+            zipcode=data['shipping']['zipcode'],
+            country=data['shipping']['country'],
+        )
+
     return JsonResponse('Payment completed!', safe=False)

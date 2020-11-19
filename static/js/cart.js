@@ -7,10 +7,11 @@ for(var i=0 ;i < updatebtns.length; i++){
         console.log('productid:',productid,'action:',action)
         console.log('USER:',user)
         if(user === 'AnonymousUser'){
-            console.log('Not logged in')
+            addCookieItem(productid,action)
         }else{
-            updateUserOrder(productid,action )
+            updateUserOrder(productid,action)
         }
+        location.reload()
     })
 }
 
@@ -35,4 +36,30 @@ function updateUserOrder(productid,action){
         location.reload()
     })
 
+}
+
+function addCookieItem(productid, action){
+	console.log('User is not authenticated')
+
+	if (action == 'add'){
+		if (cart[productid] == undefined){
+		cart[productid] = {'quantity':1}
+
+		}else{
+			cart[productid]['quantity'] += 1
+		}
+	}
+
+	if (action == 'remove'){
+		cart[productid]['quantity'] -= 1
+
+		if (cart[productid]['quantity'] <= 0){
+			console.log('Item should be deleted')
+			delete cart[productid];
+		}
+	}
+	console.log('CART:', cart)
+	document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
+	location.reload()
 }
