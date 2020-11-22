@@ -8,6 +8,7 @@ from .utils import cookieCart, cartData, guestOrder
 
 def store(request):
     data = cartData(request)
+
     cartitems = data['cartitems']
     order = data['order']
     items = data['items']
@@ -39,10 +40,10 @@ def checkout(request):
     return render(request, 'store/checkout.html', context)
 
 
-def product(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'store/product.html', context)
+def product_detail(request, id):
+    product_detail = Product.objects.get(id=id)
+    context = {'product_detail': product_detail}
+    return render(request, 'store/product_detail.html', context)
 
 
 def login(request):

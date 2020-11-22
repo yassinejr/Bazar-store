@@ -3,8 +3,6 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-
-
     <div class="container mt-5">
         <!--carousel-->
         <div class="row">
@@ -16,7 +14,7 @@
                 <div class="carousel-item">
                   <img src="{% static 'images/game.png'%}" class="d-block w-100" alt="...">
                 </div>
-                  <div class="carousel-item">
+                <div class="carousel-item">
                   <img src="{% static 'images/accessories.jpg'%}" class="d-block w-100" alt="...">
                 </div>
               </div>
@@ -34,24 +32,25 @@
 
         <!--Products-->
         <div class="container mt-5 mb-5">
-        <div class="row">
-            {% for p in products %}
-            <div class="col-md-3 mt-3">
-                <div class="card">
-                    {% if p.imageURL %}
-                    <img src="{{ p.imageURL }}" class="card-img-top" alt="..." height="200" width="300">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{p.name}}</h5>
-                        <p class="card-text">{{p.description}}</p>
-                        <button data-product={{p.id}} data-action="add" class="btn btn-primary update-cart">Add</button>
-                        <a href="{% url 'product' %}" class="btn btn-outline-success">View</a>
-                        <h6 style="display: inline; float: right">{{p.price|floatformat:2}} €</h6>
+            <div class="row">
+                {% for p in products %}
+                <div class="col-md-3 mt-3">
+                    <div class="card">
+                        <a href="{% url 'store'%}">
+                        {% if p.imageURL %}
+                        <img src="{{ p.imageURL }}" class="card-img-top" alt="..." height="200" width="300">
+                        {% endif %}
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{p.name}}</h5>
+                            <p class="card-text">{{p.description}}</p>
+                            <button data-product={{p.id}} data-action="add" class="btn btn-primary update-cart">Add to cart</button>
+                            <h6 style="display: inline; float: right">{{p.price|floatformat:2}} €</h6>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-
+        </div>
     </div>
-</div>
 {% endblock content %}
