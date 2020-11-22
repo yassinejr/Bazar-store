@@ -36,13 +36,16 @@
                     <div style="flex:2">{{ i.product.name }}</div>
                     <div style="flex:2">{{ i.product.price|floatformat:2 }}€</div>
                     <div style="flex:2">
-                        <h6 class="quantity">{{ i.quantity }}</h6>
+                        <h5 style="flex:2" class="quantity">{{ i.quantity }}</h5>
 						<div class="quantity">
 							<img data-product="{{i.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static 'images/add.png'%}">
 							<img data-product="{{i.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static 'images/minus.png'%}">
 						</div>
                     </div>
                     <div style="flex:2"><strong>{{ i.get_total|floatformat:2 }}€</strong></div>
+                    <div>
+                        <img data-product="{{i.product.id}}" data-action="delete" class="chg-quantity update-cart" src="{% static 'images/x.png'%}" title="Delete item" width="50px">
+                    </div>
                 </div>
                 {% endfor %}
 
