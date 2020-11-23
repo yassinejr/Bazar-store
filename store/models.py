@@ -3,6 +3,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.utils.text import slugify
 
 
 # Create your models here.
@@ -26,6 +27,12 @@ class Product(models.Model):
     digital = models.BooleanField(default=False, null=True, blank=True, verbose_name=_('Digital'))
     image = models.ImageField(upload_to='images/product/', null=True, blank=True, verbose_name=_('Image'))
     created_at = models.DateTimeField(default=datetime.now, null=True, blank=True, verbose_name=_('Created at'))
+    slug = models.SlugField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(Product, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
