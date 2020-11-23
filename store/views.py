@@ -40,12 +40,12 @@ def checkout(request):
     return render(request, 'store/checkout.html', context)
 
 
-def product_detail(request, id):
+def product_detail(request, slug):
     data = cartData(request)
 
     cartitems = data['cartitems']
 
-    product_detail = Product.objects.get(id=id)
+    product_detail = Product.objects.get(slug=slug)
     context = {'product_detail': product_detail, 'cartitems': cartitems}
     return render(request, 'store/product_detail.html', context)
 
