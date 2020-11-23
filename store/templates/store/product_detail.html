@@ -8,7 +8,7 @@
 <body>
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     <div class="container mt-5">
-        <h5>Product</h5>
+        <a href="{% url 'store' %}" class="btn btn-outline-info">Continue shopping</a>
         <div class="row">
             <div class="col-md-6">
                 {% if product_detail.imageURL %}
@@ -20,7 +20,8 @@
                 <h1>{{product_detail.name}}</h1>
                 <h4>{{product_detail.category}}</h4>
                 <p>{{product_detail.description}}</p>
-                <a href="#" class="btn btn-primary">Add to cart</a>
+                <h3>{{product_detail.price|floatformat:2}} €</h3>
+                <button data-product={{product_detail.id}} data-action="add" class="btn btn-primary update-cart">Add to cart</button>
             </div>
         </div>
     </div>

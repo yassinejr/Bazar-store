@@ -68,8 +68,9 @@
           Categories
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Electronics</a>
-          <a class="dropdown-item" href="#">Wear</a>
+          {% for c in categories %}
+            <a class="dropdown-item" href="#">c.id</a>
+          {% endfor %}
         </div>
       </li>
         <li class="nav-item active">

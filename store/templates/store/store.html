@@ -36,7 +36,7 @@
                 {% for p in products %}
                 <div class="col-md-3 mt-3">
                     <div class="card">
-                        <a href="{% url 'store'%}">
+                        <a href="{% url 'product_detail' p.id %}">
                         {% if p.imageURL %}
                         <img src="{{ p.imageURL }}" class="card-img-top" alt="..." height="200" width="300">
                         {% endif %}

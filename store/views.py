@@ -41,8 +41,12 @@ def checkout(request):
 
 
 def product_detail(request, id):
+    data = cartData(request)
+
+    cartitems = data['cartitems']
+
     product_detail = Product.objects.get(id=id)
-    context = {'product_detail': product_detail}
+    context = {'product_detail': product_detail, 'cartitems': cartitems}
     return render(request, 'store/product_detail.html', context)
 
 
@@ -74,6 +78,12 @@ def edit_profile(request):
 def success(request):
     context = {}
     return render(request, 'store/order_success.html', context)
+
+
+def cat(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'store/index.html', context)
 
 
 def track(request):
