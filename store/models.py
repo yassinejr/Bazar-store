@@ -24,6 +24,7 @@ class Product(models.Model):
     description = models.TextField(max_length=500, null=True, default='', verbose_name=_('Description'))
     price = models.FloatField(verbose_name=_('Price'))
     coast = models.FloatField(default=0, verbose_name=_('Coast'))
+    discount = models.FloatField(verbose_name=_('Discount'), null=True, blank=True)
     digital = models.BooleanField(default=False, null=True, blank=True, verbose_name=_('Digital'))
     image = models.ImageField(upload_to='images/product/', null=True, blank=True, verbose_name=_('Image'))
     created_at = models.DateTimeField(default=datetime.now, null=True, blank=True, verbose_name=_('Created at'))
