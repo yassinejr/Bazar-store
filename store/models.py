@@ -19,16 +19,16 @@ class Customer(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('Product name'))
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
-    brand = models.ForeignKey('settings.Brand', on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True, verbose_name=_('Category'))
+    brand = models.ForeignKey('settings.Brand', on_delete=models.CASCADE, null=True, blank=True, verbose_name=_('Brand'))
     description = models.TextField(max_length=500, null=True, default='', verbose_name=_('Description'))
     price = models.FloatField(verbose_name=_('Price'))
     coast = models.FloatField(default=0, verbose_name=_('Coast'))
-    discount = models.FloatField(verbose_name=_('Discount'), null=True, blank=True)
+    discount = models.FloatField(null=True, blank=True, verbose_name=_('Discount'))
     digital = models.BooleanField(default=False, null=True, blank=True, verbose_name=_('Digital'))
     image = models.ImageField(upload_to='images/product/', null=True, blank=True, verbose_name=_('Image'))
     created_at = models.DateTimeField(default=datetime.now, null=True, blank=True, verbose_name=_('Created at'))
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(blank=True, null=True, verbose_name=_('Slug'))
 
     def save(self, *args, **kwargs):
         if not self.slug:
