@@ -19,15 +19,16 @@ class Customer(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('Product name'))
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
-    brand = models.ForeignKey('settings.Brand', on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True, verbose_name=_('Category'))
+    brand = models.ForeignKey('settings.Brand', on_delete=models.CASCADE, null=True, blank=True, verbose_name=_('Brand'))
     description = models.TextField(max_length=500, null=True, default='', verbose_name=_('Description'))
     price = models.FloatField(verbose_name=_('Price'))
     coast = models.FloatField(default=0, verbose_name=_('Coast'))
+    discount = models.FloatField(null=True, blank=True, verbose_name=_('Discount'))
     digital = models.BooleanField(default=False, null=True, blank=True, verbose_name=_('Digital'))
     image = models.ImageField(upload_to='images/product/', null=True, blank=True, verbose_name=_('Image'))
     created_at = models.DateTimeField(default=datetime.now, null=True, blank=True, verbose_name=_('Created at'))
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(blank=True, null=True, verbose_name=_('Slug'))
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -65,10 +66,10 @@ class Category(models.Model):
 
 
 class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
-    date_ordered = models.DateTimeField(auto_now_add=True)
-    complete = models.BooleanField(default=False, null=True, blank=True)
-    transaction_id = models.CharField(max_length=200, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Customer'))
+    date_ordered = models.DateTimeField(auto_now_add=True, verbose_name=_('Date'))
+    complete = models.BooleanField(default=False, null=True, blank=True, verbose_name=_('Complete'))
+    transaction_id = models.CharField(max_length=200, null=True, verbose_name=_('Transaction id'))
 
     def __str__(self):
         return str(self.transaction_id)
@@ -96,10 +97,10 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
-    quantity = models.IntegerField(default=0, null=True, blank=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Product'))
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Order'))
+    quantity = models.IntegerField(default=0, null=True, blank=True, verbose_name=_('Quantity'))
+    date_added = models.DateTimeField(auto_now_add=True, verbose_name=_('Date added'))
 
     def __str__(self):
         return str(self.order)
@@ -111,14 +112,14 @@ class OrderItem(models.Model):
 
 
 class ShippingAddress(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
-    address = models.CharField(max_length=200, null=True)
-    city = models.CharField(max_length=200, null=True)
-    state = models.CharField(max_length=200, null=True)
-    zipcode = models.CharField(max_length=200, null=True)
-    country = models.CharField(max_length=200, null=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Customer'))
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Order'))
+    address = models.CharField(max_length=200, null=True, verbose_name=_('Adress'))
+    city = models.CharField(max_length=200, null=True, verbose_name=_('City'))
+    state = models.CharField(max_length=200, null=True, verbose_name=_('State'))
+    zipcode = models.CharField(max_length=200, null=True, verbose_name=_('Zipcode'))
+    country = models.CharField(max_length=200, null=True, verbose_name=_('Country'))
+    date_added = models.DateTimeField(auto_now_add=True, verbose_name=_('Date added'))
 
     def __str__(self):
         return str(self.address)

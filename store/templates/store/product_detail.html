@@ -20,7 +20,12 @@
                 <h1>{{product_detail.name}}</h1>
                 <h4>{{product_detail.category}}</h4>
                 <p>{{product_detail.description}}</p>
+                {% if product_detail.discount > 0%}
+                    <h3><strike>{{product_detail.price|floatformat:2}} €</strike></h3>
+                    <h3>{{product_detail.discount|floatformat:2}} €</h3>
+                {% else %}
                 <h3>{{product_detail.price|floatformat:2}} €</h3>
+                {% endif %}
                 <button data-product={{product_detail.id}} data-action="add" class="btn btn-primary update-cart">Add to cart</button>
             </div>
         </div>

@@ -45,7 +45,12 @@
                             <h5 class="card-title">{{p.name}}</h5>
                             <p class="card-text">{{p.description}}</p>
                             <button data-product={{p.id}} data-action="add" class="btn btn-primary update-cart">Add to cart</button>
-                            <h6 style="display: inline; float: right">{{p.price|floatformat:2}} €</h6>
+                            {% if p.discount > 0%}
+                            <h6 style="display: inline; float: right; color: #000000;"><strike><strong>{{p.price|floatformat:2}} €</strong></strike></h6>
+                            <h4 style="display: inline; float: right; color: #000000;"><strong>{{p.discount|floatformat:2}} €</strong></h4>
+                            {% else %}
+                            <h4 style="display: inline; float: right; color: #000000;"><strong>{{p.price|floatformat:2}} €</strong></h4>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
