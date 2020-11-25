@@ -35,22 +35,26 @@
             <div class="row">
                 {% for p in products %}
                 <div class="col-md-3 mt-3">
-                    <div class="card">
-                        <a href="{% url 'product_detail' p.slug %}">
-                        {% if p.imageURL %}
-                        <img src="{{ p.imageURL }}" class="card-img-top" alt="..." height="200" width="300">
-                        {% endif %}
-                        </a>
-                        <div class="card-body">
-                            <h5 class="card-title">{{p.name}}</h5>
-                            <p class="card-text">{{p.description}}</p>
-                            <button data-product={{p.id}} data-action="add" class="btn btn-primary update-cart">Add to cart</button>
-                            {% if p.discount > 0%}
-                            <h6 style="display: inline; float: right; color: #000000;"><strike><strong>{{p.price|floatformat:2}} €</strong></strike></h6>
-                            <h4 style="display: inline; float: right; color: #000000;"><strong>{{p.discount|floatformat:2}} €</strong></h4>
-                            {% else %}
-                            <h4 style="display: inline; float: right; color: #000000;"><strong>{{p.price|floatformat:2}} €</strong></h4>
+                    <div class="card-deck">
+                        <div class="card">
+                            <a href="{% url 'product_detail' p.slug %}">
+                            {% if p.imageURL %}
+                                <img class="card-img-top" src="{{ p.imageURL }}" alt="..." height="170" width="250">
                             {% endif %}
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{p.name}}</h5>
+                                <p class="card-text">{{p.description}}</p>
+                                {% if p.discount > 0%}
+                                <h5 style="display: inline; float: left; color: #A9A9A9;"><strike><strong>{{p.price|floatformat:2}} €</strong></strike></h5>
+                                <h4 style="display: inline; float: right; color: #000000;"><strong>{{p.discount|floatformat:2}} €</strong></h4>
+                                {% else %}
+                                <h4 style="display: inline; float: right; color: #000000;"><strong>{{p.price|floatformat:2}} €</strong></h4>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer">
+                                <button data-product={{p.id}} data-action="add" class="btn btn-primary update-cart">Add to cart</button>
+                            </div>
                         </div>
                     </div>
                 </div>
