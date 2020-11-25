@@ -4,9 +4,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
+from django.db.models.signals import post_save
 
-
-# Create your models here.
 
 class Customer(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
@@ -17,10 +16,23 @@ class Customer(models.Model):
         return self.name
 
 
+# def create_customer(sender, **kwargs):
+#     import pdb;
+#     pdb.set_trace()
+#     print(kwargs)
+#     if kwargs['created']:
+#         customer = Customer.objects.create(user=kwargs['instance'], name=kwargs['instance'])
+#
+#
+# post_save.connect(create_customer, sender=Profile)
+
+
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True, verbose_name=_('Product name'))
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True, verbose_name=_('Category'))
-    brand = models.ForeignKey('settings.Brand', on_delete=models.CASCADE, null=True, blank=True, verbose_name=_('Brand'))
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True,
+                                 verbose_name=_('Category'))
+    brand = models.ForeignKey('settings.Brand', on_delete=models.CASCADE, null=True, blank=True,
+                              verbose_name=_('Brand'))
     description = models.TextField(max_length=500, null=True, default='', verbose_name=_('Description'))
     price = models.FloatField(verbose_name=_('Price'))
     coast = models.FloatField(default=0, verbose_name=_('Coast'))
