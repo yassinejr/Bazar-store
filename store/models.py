@@ -18,10 +18,8 @@ class Customer(models.Model):
 
 def create_customer(sender, **kwargs):
     if kwargs['created']:
-        print(kwargs)
         user = User.objects.get(username=kwargs['instance'])
         user_name = user.first_name + " " + user.last_name
-        print (user_name)
         user_customer = Customer.objects.create(
             user=kwargs['instance'],
             name=user_name,

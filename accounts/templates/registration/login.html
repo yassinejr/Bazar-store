@@ -5,7 +5,9 @@
 {% block content %}
 
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<div class="alert alert-danger" role="alert">
+  Your username and password didn't match. Please try again.
+</div>
 {% endif %}
 
 {% if next %}
@@ -16,25 +18,43 @@
     <p>Please login to see this page.</p>
     {% endif %}
 {% endif %}
+<div class="jumbotron">
+    <div class="center-column">
+        <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <table>
+        <tr>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+        </tr>
+        </table>
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+        <input type="submit" class="btn btn-primary" value="login">
+        <input type="hidden" name="next" value="{{ next }}">
+        </form>
+        <br>
+        {# Assumes you setup the password_reset view in your URLconf #}
+        <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        <p><a href="{% url 'signup' %}">Create your account here</a></p>
+    </div>
+</div>
 
-<input type="submit" value="login">
-<input type="hidden" name="next" value="{{ next }}">
-</form>
+<style>
+.center-column{
+        width:350px;
+        margin:20px auto;
+        padding:20px;
+        background-color : #eefab8;
+        border-radius: 3px;
+        box-shadow: 6px 2px 30px 0px rgba(0,0,0,0.75);
+    }
 
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
+.jumbotron{
+    background-color: #eefab8;
+}
+</style>
 {% endblock content %}

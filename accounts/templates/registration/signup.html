@@ -4,14 +4,32 @@
 
 {% block content %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+<div class="jumbotron">
+    <div class="center-column">
+        {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+        {% endif %}
 
-<form method="POST">
-{% csrf_token %}
-{{form}}
-<input type="submit" value="Sign up">
-</form>
+        <form method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" class="btn btn-primary" value="Sign up">
+        </form>
+    </div>
+</div>
 
+<style>
+.center-column{
+        width:900px;
+        margin:20px auto;
+        padding:20px;
+        background-color : #eefab8;
+        border-radius: 3px;
+        box-shadow: 6px 2px 30px 0px rgba(0,0,0,0.75);
+    }
+
+.jumbotron{
+    background-color: #eefab8;
+}
+</style>
 {% endblock content %}
