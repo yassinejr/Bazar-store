@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>Bazar</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css'%}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <script type="text/javascript">
         var user = '{{request.user}}'
 
@@ -78,45 +79,60 @@
       </li>
     </ul>
       <div class="m-1">
-          <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search for a product.." aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </div>
+              <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search for a product.." aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          </div>
         {% if user.is_authenticated %}
-            <div class="m-1">
-                <div class="form-inline my-2 my-lg-0">
-                    <a href="" class="btn btn-secondary">Profile</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user-circle"></i>{{user.profile.slug}}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{% url 'profile' user.profile.slug %}"> My Profile</a>
+                  <a class="dropdown-item" href="#">Edit My Profile</a>
+                  <a class="dropdown-item" href="#">Change Password</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">My Orders</a>
+                  <a class="dropdown-item" href="#">Track Order</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'logout'%}">Logout</a>
                 </div>
-            </div>
-            <div class="m-1">
-                <div class="form-inline my-2 my-lg-0">
-                    <a href="" class="btn btn-danger">Logout</a>
+              </li>
+      <!--            <div class="m-1">-->
+<!--                <div class="form-inline my-2 my-lg-0">-->
+<!--                    <a href="{% url 'profile' user.profile.slug %}" class="btn btn-secondary">Profile</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="m-1">-->
+<!--                <div class="form-inline my-2 my-lg-0">-->
+<!--                    <a href="{% url 'login'%}" class="btn btn-danger">Logout</a>-->
+<!--                </div>-->
+<!--            </div>-->
+            {% else %}
+                <div class="m-1">
+                    <div class="form-inline my-2 my-lg-0">
+                        <a href="{% url 'login'%}" class="btn btn-warning">Login</a>
+                    </div>
                 </div>
-            </div>
-        {% else %}
-            <div class="m-1">
-                <div class="form-inline my-2 my-lg-0">
-                    <a href="{% url 'login'%}" class="btn btn-warning">Login</a>
+                <div class="m-1">
+                    <div class="form-inline my-2 my-lg-0">
+                        <a href="{% url 'signup'%}" class="btn btn-info">Signup</a>
+                    </div>
                 </div>
-            </div>
-            <div class="m-1">
-                <div class="form-inline my-2 my-lg-0">
-                    <a href="" class="btn btn-info">Signup</a>
-                </div>
-            </div>
-        {% endif %}
-      <div class="m-1">
-          <div class="form-inline my-2 my-lg-0">
-            <a href="{% url 'cart' %}" class="badge badge-primary">
-              <img id="cart-icon" src="{% static 'images/cart.png'%}">
-              <span class="badge badge-light">{{ cartitems }}</span>
-            </a>
-	    </div>
-      </div>
+            {% endif %}
 
-
+        <div class="m-1">
+            <div class="form-inline my-2 my-lg-0">
+                <a href="{% url 'cart' %}" class="badge badge-primary">
+                  <img id="cart-icon" src="{% static 'images/cart.png'%}">
+                  <span class="badge badge-light">{{ cartitems }}</span>
+                </a>
+	        </div>
+        </div>
   </div>
+
 </nav>
     {% block content%}
 

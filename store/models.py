@@ -13,18 +13,21 @@ class Customer(models.Model):
     email = models.EmailField(max_length=200)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
-# def create_customer(sender, **kwargs):
-#     import pdb;
-#     pdb.set_trace()
-#     print(kwargs)
-#     if kwargs['created']:
-#         customer = Customer.objects.create(user=kwargs['instance'], name=kwargs['instance'])
-#
-#
-# post_save.connect(create_customer, sender=Profile)
+def create_customer(sender, **kwargs):
+    if kwargs['created']:
+        user = User.objects.get(username=kwargs['instance'])
+        user_name = user.first_name + " " + user.last_name
+        user_customer = Customer.objects.create(
+            user=kwargs['instance'],
+            name=user_name,
+            email=user.email,
+        )
+
+
+post_save.connect(create_customer, sender=User)
 
 
 class Product(models.Model):

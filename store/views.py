@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 import json
 import datetime
 from .models import *
 from .utils import cookieCart, cartData, guestOrder
+from accounts.models import Profile
 
 
 def store(request):
@@ -49,41 +50,19 @@ def product_detail(request, slug):
     context = {'product_detail': product_detail, 'cartitems': cartitems}
     return render(request, 'store/product_detail.html', context)
 
-
-def login(request):
-    context = {}
-    return render(request, 'store/login.html', context)
-
-
-def password_reset(request):
-    context = {}
-    return render(request, 'store/password_reset.html', context)
+# def profile(request, slug):
+#     profile = get_object_or_404(Profile, slug=slug)
+#     data = cartData(request)
+#
+#     cartitems = data['cartitems']
+#     context = {'profile': profile, 'cartitems': cartitems}
+#     return render(request, 'store/index.html', context)
 
 
-def sign(request):
-    context = {}
-    return render(request, 'store/signup.html', context)
-
-
-def profile(request):
-    context = {}
-    return render(request, 'store/profile.html', context)
-
-
-def edit_profile(request):
-    context = {}
-    return render(request, 'store/edit_profile.html', context)
-
-
-def success(request):
-    context = {}
-    return render(request, 'store/order_success.html', context)
-
-
-def cat(request):
-    categories = Category.objects.all()
-    context = {'categories': categories}
-    return render(request, 'store/index.html', context)
+# def cat(request):
+#     categories = Category.objects.all()
+#     context = {'categories': categories}
+#     return render(request, 'store/index.html', context)
 
 
 def track(request):
