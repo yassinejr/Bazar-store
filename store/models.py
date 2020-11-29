@@ -3,8 +3,10 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django_countries.fields import CountryField
 from django.utils.text import slugify
 from django.db.models.signals import post_save
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Customer(models.Model):
@@ -37,11 +39,11 @@ class Product(models.Model):
     brand = models.ForeignKey('settings.Brand', on_delete=models.CASCADE, null=True, blank=True,
                               verbose_name=_('Brand'))
     description = models.TextField(max_length=500, null=True, default='', verbose_name=_('Description'))
-    price = models.FloatField(verbose_name=_('Price'))
-    coast = models.FloatField(default=0, verbose_name=_('Coast'))
-    discount = models.FloatField(null=True, blank=True, verbose_name=_('Discount'))
-    digital = models.BooleanField(default=False, null=True, blank=True, verbose_name=_('Digital'))
-    image = models.ImageField(upload_to='images/product/', null=True, blank=True, verbose_name=_('Image'))
+    price = models.FloatField(validators=[MinValueValidator(float('0.0'))], verbose_name=_('Price'))
+    coast = models.FloatField(default=0, validators=[MinValueValidator(float('0.0'))], verbose_name=_('Coast'))
+    discount = models.FloatField(null=True, blank=True, validators=[MinValueValidator(float('0.0'))], verbose_name=_('Discount'))
+    digital = models.BooleanField(default=False, null=True, verbose_name=_('Digital'))
+    image = models.ImageField(upload_to='images/product/', null=True, verbose_name=_('Image'))
     created_at = models.DateTimeField(default=datetime.now, null=True, blank=True, verbose_name=_('Created at'))
     slug = models.SlugField(blank=True, null=True, verbose_name=_('Slug'))
 
@@ -60,6 +62,9 @@ class Product(models.Model):
         except:
             url = ''
         return url
+
+    def is_valid_product(self):
+        return self.price > 0 and self.price > self.coast and self.discount >= 0 and self.price > self.discount > self.coast
 
 
 class Category(models.Model):
@@ -133,7 +138,7 @@ class ShippingAddress(models.Model):
     city = models.CharField(max_length=200, null=True, verbose_name=_('City'))
     state = models.CharField(max_length=200, null=True, verbose_name=_('State'))
     zipcode = models.CharField(max_length=200, null=True, verbose_name=_('Zipcode'))
-    country = models.CharField(max_length=200, null=True, verbose_name=_('Country'))
+    country = CountryField(null=True, verbose_name=_('Country'))
     date_added = models.DateTimeField(auto_now_add=True, verbose_name=_('Date added'))
 
     def __str__(self):
