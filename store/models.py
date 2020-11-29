@@ -10,7 +10,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     email = models.EmailField(max_length=200)
 
@@ -41,7 +41,8 @@ class Product(models.Model):
     description = models.TextField(max_length=500, null=True, default='', verbose_name=_('Description'))
     price = models.FloatField(validators=[MinValueValidator(float('0.0'))], verbose_name=_('Price'))
     coast = models.FloatField(default=0, validators=[MinValueValidator(float('0.0'))], verbose_name=_('Coast'))
-    discount = models.FloatField(null=True, blank=True, validators=[MinValueValidator(float('0.0'))], verbose_name=_('Discount'))
+    discount = models.FloatField(null=True, blank=True, validators=[MinValueValidator(float('0.0'))],
+                                 verbose_name=_('Discount'))
     digital = models.BooleanField(default=False, null=True, verbose_name=_('Digital'))
     image = models.ImageField(upload_to='images/product/', null=True, verbose_name=_('Image'))
     created_at = models.DateTimeField(default=datetime.now, null=True, blank=True, verbose_name=_('Created at'))
@@ -64,7 +65,12 @@ class Product(models.Model):
         return url
 
     def is_valid_product(self):
-        return self.price > 0 and self.price > self.coast and self.discount >= 0 and self.price > self.discount > self.coast
+        if self.discount > 0:
+            return self.price > self.coast and self.price > self.discount > self.coast
+        elif self.discount == 0:
+            return self.price > self.coast
+        else:
+            raise Exception("Discount cannot be negative")
 
 
 class Category(models.Model):
