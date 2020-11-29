@@ -13,7 +13,7 @@ class Profile(models.Model):
     name = models.CharField(max_length=200, null=True)
     email = models.EmailField(blank=True, null=True)
     address = models.CharField(max_length=200, blank=True, null=True)
-    country = CountryField()
+    country = CountryField(verbose_name=_('Country'))
     birth = models.DateField(auto_now_add=False, auto_now=False, default=date.today)
     image = models.ImageField(upload_to='images/profile_img/', null=True, blank=True, verbose_name=_('Image'))
     join_date = models.DateTimeField(default=datetime.now, null=True, blank=True, verbose_name=_('Joined at'))

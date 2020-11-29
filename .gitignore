@@ -4,7 +4,8 @@ __pycache__/
 *.py[cod]
 .pyc
 *$py.class
-
+_migrations/*
+!_migrations/__init__.py
 # C extensions
 *.so
 
