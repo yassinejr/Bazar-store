@@ -7,7 +7,6 @@ from .forms import UserForm
 from .utils import cookieCart, cartData, guestOrder
 
 
-
 def signup(request):
     if request.method == "POST":
         form = UserForm(request.POST)
