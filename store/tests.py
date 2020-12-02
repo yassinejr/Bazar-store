@@ -176,7 +176,7 @@ class ProductTestCase(TestCase):
     def tearDown(self):
         self.delete_products_images()
 
-    driver.close()
+    # driver.close()
 
 
 if __name__ == '__main__':
