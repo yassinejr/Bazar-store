@@ -1,12 +1,26 @@
 import os
+import pathlib
 import unittest
 
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, RequestFactory
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.db.models import Max
+from selenium.webdriver.firefox.webdriver import WebDriver
+from django.test import TestCase, Client
 from .models import Product, Category
 from bazar import settings
-from django.core.files.images import ImageFile
+
+from selenium import webdriver
+
+
+# Finds the Uniform Resource Identifier of a file
+def file_uri(filename):
+    return pathlib.Path(os.path.abspath(filename)).as_uri()
+
+
+# Sets up web driver using Google chrome
+driver = webdriver.Chrome()
 
 
 class ProductTestCase(TestCase):
@@ -17,13 +31,13 @@ class ProductTestCase(TestCase):
 
     def setUp(self):
         # create user
-        user = {
+        user_info = {
             'first_name': 'Tester',
             'last_name': 'Testing',
             'username': 'tester',
             'password': 'topsecret2020',
         }
-        User.objects.create(**user)
+        self.user = User.objects.create(**user_info)
 
         # create category
         """
@@ -134,8 +148,35 @@ class ProductTestCase(TestCase):
         self.P4.image.delete()
         self.P5.image.delete()
 
+    def test_index(self):
+        # Set up client to make requests
+        c = Client()
+
+        # Send get request to index page and store response
+        response = c.get("//")
+
+        # Make sure status code is 200
+        self.assertEqual(response.status_code, 200)
+
+        # Make sure three flights are returned in the context
+        self.assertEqual(response.context["products"].count(), 5)
+
+    def test_valid_product_page(self):
+        p1 = Product.objects.get(name='product1')
+        c = Client()
+        response = c.get(f"//{p1.slug}")
+        self.assertEqual(response.status_code, 200)
+
+    def test_valid_user(self):
+        user = User(username="tester")
+        c = Client()
+        response = c.get(f"/accounts/{user.username}")
+        self.assertEqual(response.status_code, 302)
+
     def tearDown(self):
         self.delete_products_images()
+
+    driver.close()
 
 
 if __name__ == '__main__':
