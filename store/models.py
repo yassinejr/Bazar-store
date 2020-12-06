@@ -44,7 +44,11 @@ class Product(models.Model):
     discount = models.FloatField(null=True, blank=True, validators=[MinValueValidator(float('0.0'))],
                                  verbose_name=_('Discount'))
     digital = models.BooleanField(default=False, null=True, verbose_name=_('Digital'))
+    # availability = models.BooleanField(default=False, null=True, verbose_name=_('Availability'))
     image = models.ImageField(upload_to='images/product/', null=True, verbose_name=_('Image'))
+    # image2 = models.ImageField(upload_to='images/product/', null=True, verbose_name=_('Image'))
+    # image3 = models.ImageField(upload_to='images/product/', null=True, verbose_name=_('Image'))
+    # image4 = models.ImageField(upload_to='images/product/', null=True, verbose_name=_('Image'))
     created_at = models.DateTimeField(default=datetime.now, null=True, blank=True, verbose_name=_('Created at'))
     slug = models.SlugField(blank=True, null=True, verbose_name=_('Slug'))
 

@@ -8,21 +8,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box-element">
-                <a href="{% url 'store' %}" class="btn btn-outline-dark">Continue shopping</a>
-                <br>
-                <br>
-                <table class="table">
-                    <tr>
-                        <th><h5>Items: <strong>{{ order.get_cart_items }}</strong></h5></th>
-                        <th><h5>Total: <strong>{{ order.get_cart_total|floatformat:2 }}€</strong></h5></th>
-                        <th>
-                            <a style="float:right; margin:5px" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
-                        </th>
-                    </tr>
-                </table>
-            </div>
-            <br>
-            <div class="box-element">
                 <div class="cart-row">
                     <div style="flex:2"></div>
                     <div style="flex:2">Item</div>
@@ -48,9 +33,38 @@
                     </div>
                 </div>
                 {% endfor %}
-
             </div>
+            <br>
+            <div class="box-element">
+                <label class="text-black h4" for="coupon">Coupon</label>
+                <p>Enter your coupon code if you have one.</p>
+                <div class="row form-row">
+                  <div class="col">
+                    <input class="form-control" id="coupon" placeholder="Coupon Code" type="text">
+                  </div>
+                  <div class="col col-auto">
+                    <button class="btn btn-dark btn-animated">Apply Coupon</button>
+                  </div>
+                </div>
+            </div>
+            <br>
+            <div class="box-element">
+                <a href="{% url 'store' %}" class="btn btn-outline-dark">Continue shopping</a>
+                <br>
+                <br>
+                <table class="table">
+                    <tr>
+                        <th><h5>Items: <strong>{{ order.get_cart_items }}</strong></h5></th>
+                        <th><h5>Total: <strong>{{ order.get_cart_total|floatformat:2 }}€</strong></h5></th>
+                        <th>
+                            <a style="float:right; margin:5px" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+            <br>
         </div>
     </div>
 </div>
+<br>
 {% endblock content %}
