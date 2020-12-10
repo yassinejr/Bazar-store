@@ -2,11 +2,17 @@
 {% load static %}
 {% block content %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
- <h1>Checkout</h1>
+<br>
+<br>
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
-            <div class="box-element" id="form-wrapper">
+        <div class="col-md-4">
+            <div>
+				<a class="btn btn-outline-dark" href="{% url 'shopping-cart' %}">Back to shopping cart</a>
+			</div>
+			<br>
+			<br>
+			<div class="box-element" id="form-wrapper">
                 <form id="form">
 					{% csrf_token %}
                     <div id="user-info">
@@ -38,7 +44,7 @@
 						</div>
 					</div>
                     <hr>
-                    <input type="submit" id="form-button" class="btn btn-success btn-block" value="continue">
+                    <input type="submit" id="form-button" class="btn btn-success btn-block" value="Validate informations">
                 </form>
             </div>
             <br>
@@ -50,25 +56,34 @@
         </div>
 
 
-        <div class="col-md-6">
-            <div class="box-element">
-                <a class="btn btn-outline-dark" href="{% url 'cart' %}">Back to cart</a>
-                <hr>
-				<h3>Order Summary</h3>
-				<hr>
-				{% for i in items %}
-				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{{ i.product.imageURL}}"></div>
-					<div style="flex:2"><p>{{ i.product.name }}</p></div>
-					<div style="flex:1"><p>{{ i.quantity }}</p></div>
-					<div style="flex:1"><p>{{ i.product.price|floatformat:2 }}€</p></div>
-				</div>
-				{% endfor %}
-				<h5>Items: {{ order.get_cart_items }}</h5>
-				<h5>Total: {{ order.get_cart_total|floatformat:2 }}€</h5>
-            </div>
-        </div>
-    </div>
+        <div class="col-md-8">
+			{% for i in items %}
+					<div class="wrap-table-shopping-cart">
+							<table class="table-shopping-cart">
+								<tr class="table_row">
+									<td class="column-1">
+										<div class="how-itemcart1">
+											<img src="{{i.product.imageURL}}" alt="IMG">
+										</div>
+									</td>
+									<td class="column-2">{{ i.product.name }}</td>
+									<td class="column-3">$ {{ i.product.price|floatformat:2 }}</td>
+									<td class="column-4">
+										{{ i.quantity }}
+									</td>
+									<td class="column-5">$ {{ i.get_total|floatformat:2 }}</td>
+								</tr>
+							</table>
+
+					</div>
+			{% endfor %}
+					<div class="w-full">
+						<div class="header-cart-total w-full p-tb-40">
+							Total: ${{ order.get_cart_total|floatformat:2 }}
+						</div>
+					</div>
+		</div>
+	</div>
 </div>
 
 <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>

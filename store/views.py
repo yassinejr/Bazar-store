@@ -14,12 +14,13 @@ def store(request):
     order = data['order']
     items = data['items']
 
+    categories = Category.objects.all()
     products = Product.objects.all()
-    context = {'products': products, 'cartitems': cartitems}
-    return render(request, 'store/store.html', context)
+    context = {'products': products, 'categories': categories, 'cartitems': cartitems, 'items': items, 'order': order}
+    return render(request, 'store/product.html', context)
 
 
-def cart(request):
+def shopping_cart(request):
     data = cartData(request)
 
     cartitems = data['cartitems']
@@ -27,8 +28,18 @@ def cart(request):
     items = data['items']
 
     context = {'items': items, 'order': order, 'cartitems': cartitems}
-    return render(request, 'store/cart.html', context)
+    return render(request, 'store/shopping-cart.html', context)
 
+
+def quick_cart(request):
+    data = cartData(request)
+
+    cartitems = data['cartitems']
+    order = data['order']
+    items = data['items']
+
+    context = {'items': items, 'order': order, 'cartitems': cartitems}
+    return render(request, 'store/index.html', context)
 
 def checkout(request):
     data = cartData(request)
@@ -45,24 +56,12 @@ def product_detail(request, slug):
     data = cartData(request)
 
     cartitems = data['cartitems']
+    order = data['order']
+    items = data['items']
 
     product_detail = Product.objects.get(slug=slug)
-    context = {'product_detail': product_detail, 'cartitems': cartitems}
-    return render(request, 'store/product_detail.html', context)
-
-# def profile(request, slug):
-#     profile = get_object_or_404(Profile, slug=slug)
-#     data = cartData(request)
-#
-#     cartitems = data['cartitems']
-#     context = {'profile': profile, 'cartitems': cartitems}
-#     return render(request, 'store/index.html', context)
-
-
-# def cat(request):
-#     categories = Category.objects.all()
-#     context = {'categories': categories}
-#     return render(request, 'store/index.html', context)
+    context = {'product_detail': product_detail, 'cartitems': cartitems, 'items': items, 'order': order}
+    return render(request, 'store/product-detail2.html', context)
 
 
 def track(request):
