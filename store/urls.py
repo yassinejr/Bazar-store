@@ -10,5 +10,8 @@ urlpatterns = [
     path('track/', views.track, name="track"),
     path('update_item/', views.updateitem, name="updateitem"),
     path('process_order/', views.processorder, name="processorder"),
+    path('blog/', views.blog, name="blog"),
+    path('blog_dtail/', views.blog_detail, name="blog_detail"),
+    path('contact/', views.contact, name="contact"),
 ]
 

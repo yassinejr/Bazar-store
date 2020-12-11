@@ -28,7 +28,7 @@ def shopping_cart(request):
     items = data['items']
 
     context = {'items': items, 'order': order, 'cartitems': cartitems}
-    return render(request, 'store/shopping-cart.html', context)
+    return render(request, 'store/shopping_cart.html', context)
 
 
 def quick_cart(request):
@@ -40,6 +40,7 @@ def quick_cart(request):
 
     context = {'items': items, 'order': order, 'cartitems': cartitems}
     return render(request, 'store/index.html', context)
+
 
 def checkout(request):
     data = cartData(request)
@@ -63,6 +64,22 @@ def product_detail(request, slug):
     context = {'product_detail': product_detail, 'cartitems': cartitems, 'items': items, 'order': order}
     return render(request, 'store/product-detail2.html', context)
 
+
+def blog(request):
+    # blogs = Blog.objects.all()
+
+    # context = {'blog':blogs}
+    return render(request, 'store/blog.html')
+
+def blog_detail(request):
+    # blogs = Blog.objects.all()
+    # context = {'blog':blogs}
+    return render(request, 'store/blog-detail.html')
+
+def contact(request):
+    # blogs = Blog.objects.all()
+    # context = {'blog':blogs}
+    return render(request, 'store/contact.html')
 
 def track(request):
     if request.user.is_authenticated:

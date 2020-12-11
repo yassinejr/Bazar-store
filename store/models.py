@@ -72,6 +72,9 @@ class Product(models.Model):
         else:
             raise Exception("Discount cannot be negative")
 
+    def in_stock(self):
+        if self.stock > 0:
+            return True
 
 class Category(models.Model):
     category_name = models.CharField(max_length=50, verbose_name=_('Category name'))
