@@ -37,6 +37,7 @@ def quick_cart(request):
     cartitems = data['cartitems']
     order = data['order']
     items = data['items']
+    print (items)
 
     context = {'items': items, 'order': order, 'cartitems': cartitems}
     return render(request, 'store/index.html', context)
@@ -62,7 +63,7 @@ def product_detail(request, slug):
 
     product_detail = Product.objects.get(slug=slug)
     context = {'product_detail': product_detail, 'cartitems': cartitems, 'items': items, 'order': order}
-    return render(request, 'store/product-detail2.html', context)
+    return render(request, 'store/product_detail.html', context)
 
 
 def blog(request):
@@ -74,7 +75,7 @@ def blog(request):
 def blog_detail(request):
     # blogs = Blog.objects.all()
     # context = {'blog':blogs}
-    return render(request, 'store/blog-detail.html')
+    return render(request, 'store/blog_detail.html')
 
 def contact(request):
     # blogs = Blog.objects.all()
