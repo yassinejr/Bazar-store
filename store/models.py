@@ -43,7 +43,7 @@ class Product(models.Model):
     coast = models.FloatField(default=0, validators=[MinValueValidator(float('0.0'))], verbose_name=_('Coast'))
     discount = models.FloatField(null=True, blank=True, validators=[MinValueValidator(float('0.0'))],
                                  verbose_name=_('Discount'))
-    digital = models.BooleanField(default=False, null=True, verbose_name=_('Digital'))
+    stock = models.IntegerField(null=True, verbose_name=_('Stock'))
     image = models.ImageField(upload_to='images/product/', null=True, verbose_name=_('Image'))
     created_at = models.DateTimeField(default=datetime.now, null=True, blank=True, verbose_name=_('Created at'))
     slug = models.SlugField(blank=True, null=True, verbose_name=_('Slug'))
@@ -72,6 +72,9 @@ class Product(models.Model):
         else:
             raise Exception("Discount cannot be negative")
 
+    def in_stock(self):
+        if self.stock > 0:
+            return True
 
 class Category(models.Model):
     category_name = models.CharField(max_length=50, verbose_name=_('Category name'))
