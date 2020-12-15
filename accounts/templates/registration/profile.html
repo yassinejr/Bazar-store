@@ -1,25 +1,21 @@
 {% extends 'store/index.html' %}
 {% load static %}
 {% block content%}
-<head>
-    <meta charset="UTF-8">
-    <title>Profile</title>
-</head>
+<br>
 <body>
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <div class="container mt-5">
-    <h5>Profile</h5>
     <div class="row">
 
         <div class="col-md-4">
             {% if profile.image %}
                 <img src="{{profile.image.url}}">
             {% else %}
-                <img src="{% static 'images/default.png' %}" width="200" height="300">
+                <img src="{% static 'images/default.png' %}" width="200" height="200">
             {% endif %}
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-7">
             <h2>{{profile.name}}</h2>
             <br>
             <h3>Personal informations</h3>
@@ -30,6 +26,9 @@
             <h4>City: {{profile.city}}city</h4>
             <h4>Street: {{profile.street}}</h4>
             <h4>Joined Bazar at: {{profile.join_date}}</h4>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-primary">Edit profile</button>
         </div>
     </div>
 </div>

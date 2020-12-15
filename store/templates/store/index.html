@@ -135,8 +135,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{% url 'profile' user.profile.slug %}"> My Profile</a>
-                                <a class="dropdown-item" href="#">Edit My Profile</a>
-                                <a class="dropdown-item" href="#">Change Password</a>
+                                <a class="dropdown-item" href="{% url 'edit_profile' user.profile.slug %}">Edit My Profile</a>
+                                <a class="dropdown-item" href="{% url 'password_change'%}">Change Password</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">My Orders</a>
                                 <a class="dropdown-item" href="#">Track Order</a>

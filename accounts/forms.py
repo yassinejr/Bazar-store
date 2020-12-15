@@ -34,3 +34,13 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['image', 'country', 'address']
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+        )

@@ -37,7 +37,7 @@ def quick_cart(request):
     cartitems = data['cartitems']
     order = data['order']
     items = data['items']
-    print (items)
+    print(items)
 
     context = {'items': items, 'order': order, 'cartitems': cartitems}
     return render(request, 'store/index.html', context)
@@ -72,15 +72,18 @@ def blog(request):
     # context = {'blog':blogs}
     return render(request, 'store/blog.html')
 
+
 def blog_detail(request):
     # blogs = Blog.objects.all()
     # context = {'blog':blogs}
     return render(request, 'store/blog_detail.html')
 
+
 def contact(request):
     # blogs = Blog.objects.all()
     # context = {'blog':blogs}
     return render(request, 'store/contact.html')
+
 
 def track(request):
     if request.user.is_authenticated:

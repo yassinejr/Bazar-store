@@ -1,0 +1,16 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content%}
+<br>
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        {{ profile_form.as_table }}
+        </table>
+        <button class="btn btn-primary"type="submit">Submit</button>
+    </form>
+    <br>
+</div>
+{% endblock content %}
