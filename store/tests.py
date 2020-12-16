@@ -46,7 +46,7 @@ class ProductTestCase(TestCase):
               'price': 120,
               'coast': 80,
               'discount': 0,
-              # 'digital': True,
+              'digital': True,
               'image': test_image_upload,
               'slug': 'product1'}
         p2 = {'name': 'product2',
@@ -55,7 +55,7 @@ class ProductTestCase(TestCase):
               'price': 120,
               'coast': 120,
               'discount': 0,
-              # 'digital': True,
+              'digital': True,
               'image': test_image_upload,
               'slug': 'product2'}
         p3 = {'name': 'product3',
@@ -64,7 +64,7 @@ class ProductTestCase(TestCase):
               'price': 90,
               'coast': 100,
               'discount': 0,
-              # 'digital': True,
+              'digital': True,
               'image': test_image_upload,
               'slug': 'product3'}
         p4 = {'name': 'product4',
@@ -82,7 +82,7 @@ class ProductTestCase(TestCase):
               'price': 120,
               'coast': 100,
               'discount': 300,
-              # 'digital': True,
+              'digital': True,
               'image': test_image_upload,
               'slug': 'product5'}
 
